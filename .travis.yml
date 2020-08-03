@@ -1,0 +1,26 @@
+sudo: required
+
+services:
+    - docker
+
+before_install:
+    - docker build -t soumya/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+    - docker run soumya/react-test  npm test -- --coverage
+
+after_success:
+    - docker build -t soumya/multi-client ./client
+    - docker build -t soumya/multi-server ./server
+    - docker build -t soumya/multi-nginx ./nginx
+    - docker build -t soumya/multi-worker ./worker    
+    # Log into Docker CLI
+    - echo "$DOCKER_PASSWORD" | docker login -u "DOCKER_ID" --passowrd-stdin
+
+    # take those images and push them docker hub
+    - docker push soumya/multi-client
+    - docker push soumya/multi-server
+    - docker push soumya/multi-nginx
+    - docker push soumya/multi-worker
+
+
