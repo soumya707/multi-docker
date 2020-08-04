@@ -15,7 +15,7 @@ after_success:
     - docker build -t soumya/multi-nginx ./nginx
     - docker build -t soumya/multi-worker ./worker    
     # Log into Docker CLI
-    - echo "$DOCKER_PASSWORD" | docker login -u "DOCKER_ID" --passowrd-stdin
+    - echo "$DOCKER_PASSWORD" | docker login -u "DOCKER_ID" --password-stdin
 
     # take those images and push them docker hub
     - docker push soumya/multi-client
